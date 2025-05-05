@@ -5,14 +5,12 @@ import com.bezkoder.spring.datajpa.service.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1")
 public class UserController {
 
     @Autowired
@@ -28,9 +26,19 @@ public class UserController {
         return (CsrfToken) request.getAttribute("_csrf");
     }
 
-    @PostMapping("/register")
+    @PostMapping("/register/v1")
     public Users register(@RequestBody Users users) {
         return service.register(users);
+    }
+
+    @PostMapping("/register")
+    public Users registerUser(@RequestBody Users users) {
+        return service.registerUser(users);
+    }
+
+    @GetMapping(name = "/getSalt")
+    public String getSalt(String username) {
+        return service.getSalt(username);
     }
 
     @PostMapping("/login")
