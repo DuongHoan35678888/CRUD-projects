@@ -10,4 +10,8 @@ public interface IUserService {
     public Users register(Users users);
 
     String verify(Users users);
+
+    Users registerUser(Users users);
+
+    String getSalt(String username);
 }
