@@ -1,33 +1,46 @@
 package com.bezkoder.spring.datajpa.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 public class Users {
     @Id
-    private int id;
+    private String id;
 
+    @PrePersist
+    public void generateId() {
+        if (this.id == null) {
+            this.id = UUID.randomUUID().toString();
+        }
+    }
+
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "password")
     private String password;
 
-    public Users(int id, String name, String password) {
+    @Column(name = "salt")
+    private String salt;
+
+    public Users(String id, String username, String password, String salt) {
         this.id = id;
-        this.username = name;
+        this.username = username;
         this.password = password;
+        this.salt = salt;
     }
 
     public Users() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -47,12 +60,21 @@ public class Users {
         this.password = password;
     }
 
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + username + '\'' +
+        return "Users{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
                 '}';
     }
 }
