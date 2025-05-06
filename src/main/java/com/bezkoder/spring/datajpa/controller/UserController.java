@@ -36,7 +36,7 @@ public class UserController {
         return service.registerUser(users);
     }
 
-    @GetMapping(name = "/getSalt")
+    @PostMapping("/salt")
     public String getSalt(String username) {
         return service.getSalt(username);
     }

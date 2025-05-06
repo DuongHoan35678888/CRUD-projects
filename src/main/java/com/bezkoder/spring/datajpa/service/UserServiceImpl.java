@@ -54,8 +54,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public String getSalt(String username) {
-        String salt = repository.findSaltByUsername(username);
-        return salt;
+        return repository.findSaltByUsername(username);
     }
 
     @Override
