@@ -4,7 +4,7 @@ public class ApiResponse<T> {
     private String code;
     private String message;
     private String request_id;
-    private T body;
+    private T response;
 
     public ApiResponse() {
     }
@@ -13,7 +13,7 @@ public class ApiResponse<T> {
         this.code = code;
         this.message = message;
         this.request_id = request_id;
-        this.body = body;
+        this.response = body;
     }
 
     public String getCode() {
@@ -40,11 +40,11 @@ public class ApiResponse<T> {
         this.request_id = request_id;
     }
 
-    public T getBody() {
-        return body;
+    public T getResponse() {
+        return response;
     }
 
-    public void setBody(T body) {
-        this.body = body;
+    public void setResponse(T response) {
+        this.response = response;
     }
 }
