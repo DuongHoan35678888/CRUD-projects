@@ -1,17 +1,15 @@
-package com.bezkoder.spring.datajpa.model;
+package com.bezkoder.spring.datajpa.dto;
 
 public class ApiResponse<T> {
     private String code;
-    private String message;
     private String request_id;
     private T response;
 
     public ApiResponse() {
     }
 
-    public ApiResponse(String code, String message, String request_id, T body) {
+    public ApiResponse(String code, String request_id, T body) {
         this.code = code;
-        this.message = message;
         this.request_id = request_id;
         this.response = body;
     }
@@ -22,14 +20,6 @@ public class ApiResponse<T> {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public String getRequest_id() {

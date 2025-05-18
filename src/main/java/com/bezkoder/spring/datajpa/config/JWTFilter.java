@@ -1,6 +1,5 @@
 package com.bezkoder.spring.datajpa.config;
 
-import com.bezkoder.spring.datajpa.model.UserPrincipal;
 import com.bezkoder.spring.datajpa.service.JWTService;
 import com.bezkoder.spring.datajpa.service.MyUserDetailsService;
 import jakarta.servlet.FilterChain;
