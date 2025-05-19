@@ -77,7 +77,7 @@ public class UserServiceImpl implements IUserService {
 
             UserLogin userLogin = new UserLogin(requestId, token, expirationTime, users.getUsername());
             ApiResponse<UserLogin> response = new ApiResponse<>(
-                    ResponseCode.LOGGED_IN_SUCCESS,
+                    ResponseCode.SUCCESS,
                     requestId,
                     userLogin
             );
