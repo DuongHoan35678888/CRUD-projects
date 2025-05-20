@@ -7,4 +7,6 @@ public class ResponseCode {
     public static final String SUCCESS = "200000";
     public static final String LOGGED_OUT_SUCCESS = "200005";
 
+    public static final String INTERNAL_ERROR = "500001";
+    public static final String INVALID_INPUT = "100001";
 }
