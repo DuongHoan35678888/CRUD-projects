@@ -1,40 +1,23 @@
 package com.bezkoder.spring.datajpa.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
+@Data
 public class ApiResponse<T> {
     private String code;
-    private String request_id;
+
+    @JsonProperty("request_id")
+    private String requestId;
+
     private T response;
 
     public ApiResponse() {
     }
 
-    public ApiResponse(String code, String request_id, T body) {
+    public ApiResponse(String code, String requestId, T response) {
         this.code = code;
-        this.request_id = request_id;
-        this.response = body;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getRequest_id() {
-        return request_id;
-    }
-
-    public void setRequest_id(String request_id) {
-        this.request_id = request_id;
-    }
-
-    public T getResponse() {
-        return response;
-    }
-
-    public void setResponse(T response) {
+        this.requestId = requestId;
         this.response = response;
     }
 }

@@ -3,10 +3,10 @@ package com.bezkoder.spring.datajpa.service;
 import com.bezkoder.spring.datajpa.common.ResponseCode;
 import com.bezkoder.spring.datajpa.dto.ApiResponse;
 import com.bezkoder.spring.datajpa.dto.UserLogin;
+import com.bezkoder.spring.datajpa.exception.UserNotFoundException;
 import com.bezkoder.spring.datajpa.model.Users;
 import com.bezkoder.spring.datajpa.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -61,37 +61,28 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public String getSalt(String username) {
-        return repository.findSaltByUsername(username);
+        return repository.findSaltByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + username));
     }
 
     @Override
     public ResponseEntity<ApiResponse<UserLogin>> login(Users users) {
-        String requestId = UUID.randomUUID().toString(); // Tạo ID request ngẫu nhiên
+        String requestId = UUID.randomUUID().toString();
 
-        try {
-            String token = String.valueOf(verify(users));
+        // Giả định verify(users) ném UserNotFoundException hoặc các exception khác nếu sai
+        String token = String.valueOf(verify(users));
+        String tokenExpires = jwtService.generateToken(users.getUsername());
+        Date expiration = jwtService.extractExpiration(tokenExpires);
+        int expirationTime = (int) ((expiration.getTime() - System.currentTimeMillis()) / 1000);
 
-            String token_expires = jwtService.generateToken(users.getUsername());
-            Date expiration = jwtService.extractExpiration(token_expires);
-            int expirationTime = (int)((expiration.getTime() - System.currentTimeMillis()) / 1000);
+        UserLogin userLogin = new UserLogin(requestId, token, expirationTime, users.getUsername());
+        ApiResponse<UserLogin> response = new ApiResponse<>(
+                ResponseCode.SUCCESS,
+                requestId,
+                userLogin
+        );
 
-            UserLogin userLogin = new UserLogin(requestId, token, expirationTime, users.getUsername());
-            ApiResponse<UserLogin> response = new ApiResponse<>(
-                    ResponseCode.SUCCESS,
-                    requestId,
-                    userLogin
-            );
-
-            return ResponseEntity.ok(response);
-
-        } catch (Exception e) {
-            ApiResponse<UserLogin> errorResponse = new ApiResponse<>(
-                    ResponseCode.USER_NOT_FOUND,
-                    requestId,
-                    null
-            );
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-        }
+        return ResponseEntity.ok(response);
     }
 
     @Override
