@@ -19,4 +19,6 @@ public interface IUserService {
     String getSalt(String username);
 
     ResponseEntity<ApiResponse<UserLogin>> login(Users users);
+
+    boolean existsByUsername(String username);
 }

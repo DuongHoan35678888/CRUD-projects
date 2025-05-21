@@ -2,15 +2,13 @@ package com.bezkoder.spring.datajpa.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,21 +17,13 @@ import java.util.function.Function;
 @Service
 public class JWTService {
 
-    private String secretKey = "";
+    private final SecretKey secretKey;
 
-    public JWTService() {
-        try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
-
-            SecretKey secretKey1 = keyGenerator.generateKey();
-            secretKey = Base64.getEncoder().encodeToString(secretKey1.getEncoded());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+    public JWTService(@Value("${jwt.secret}") String secret) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateToken(String username) {
-
         Map<String, Object> claims = new HashMap<>();
 
         return Jwts.builder()
@@ -41,20 +31,18 @@ public class JWTService {
                 .add(claims)
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
+                .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 1 ngày
                 .and()
-                .signWith(getKey())
+                .signWith(secretKey)
                 .compact();
-
-    }
-
-    public SecretKey getKey() {
-        byte [] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
@@ -64,7 +52,7 @@ public class JWTService {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .verifyWith(getKey())
+                .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
@@ -77,9 +65,5 @@ public class JWTService {
 
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
-    }
-
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
     }
 }
