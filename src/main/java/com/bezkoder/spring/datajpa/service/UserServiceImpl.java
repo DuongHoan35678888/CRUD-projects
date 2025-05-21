@@ -31,7 +31,7 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private JWTService jwtService;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
     @Override
     public Users register(Users users) {
@@ -83,6 +83,11 @@ public class UserServiceImpl implements IUserService {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return repository.existsByUsername(username);
     }
 
     @Override

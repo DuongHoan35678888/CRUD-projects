@@ -8,8 +8,10 @@ import com.bezkoder.spring.datajpa.model.Users;
 import com.bezkoder.spring.datajpa.service.IUserService;
 import com.bezkoder.spring.datajpa.service.JWTService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +41,16 @@ public class UserController {
     }
 
     @PostMapping("/register/v1")
-    public Users register(@RequestBody Users users) {
-        return service.register(users);
+    public ResponseEntity<ApiResponse<Users>> register(@Valid @RequestBody Users users) {
+        String requestId = UUID.randomUUID().toString();
+
+        // Check username đã tồn tại
+        if (service.existsByUsername(users.getUsername())) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+
+        Users registeredUser = service.register(users);
+        return ResponseEntity.ok(new ApiResponse<>(ResponseCode.SUCCESS, requestId, registeredUser));
     }
 
     @PostMapping("/register")

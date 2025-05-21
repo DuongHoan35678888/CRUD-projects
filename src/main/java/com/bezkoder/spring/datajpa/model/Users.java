@@ -1,12 +1,18 @@
 package com.bezkoder.spring.datajpa.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
+@Data
+@NoArgsConstructor
 public class Users {
+
     @Id
     private String id;
 
@@ -17,13 +23,16 @@ public class Users {
         }
     }
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true, nullable = false)
+    @NotBlank(message = "Username must not be blank")
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
+    @NotBlank(message = "Password must not be blank")
     private String password;
 
-    @Column(name = "salt")
+    @Column(name = "salt", nullable = false)
+    @NotBlank(message = "Salt must not be blank")
     private String salt;
 
     public Users(String id, String username, String password, String salt) {
@@ -31,50 +40,5 @@ public class Users {
         this.username = username;
         this.password = password;
         this.salt = salt;
-    }
-
-    public Users() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    @Override
-    public String toString() {
-        return "Users{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", salt='" + salt + '\'' +
-                '}';
     }
 }
