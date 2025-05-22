@@ -2,6 +2,8 @@ package com.bezkoder.spring.datajpa.controller;
 
 import com.bezkoder.spring.datajpa.common.ResponseCode;
 import com.bezkoder.spring.datajpa.dto.ApiResponse;
+import com.bezkoder.spring.datajpa.dto.ExceptionResponse;
+import com.bezkoder.spring.datajpa.exception.BusinessException;
 import com.bezkoder.spring.datajpa.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -43,13 +45,13 @@ public class GlobalExceptionHandler {
 
     // Xử lý lỗi chung, chưa được xử lý ở trên
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<String>> handleException(Exception ex) {
+    public ResponseEntity<ApiResponse<ExceptionResponse>> handleException(Exception ex) {
         String requestId = UUID.randomUUID().toString();
         log.error("Internal server error, requestId: {}, error: {}", requestId, ex.getMessage(), ex);
-        ApiResponse<String> response = new ApiResponse<>(
-                ResponseCode.INTERNAL_ERROR,
+        ApiResponse<ExceptionResponse> response = new ApiResponse<>(
+                ResponseCode.INTERNAL_SERVER_ERROR,
                 requestId,
-                "Internal server error"
+                new ExceptionResponse(ResponseCode.INTERNAL_SERVER_ERROR)
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
@@ -67,6 +69,38 @@ public class GlobalExceptionHandler {
                 errorMsg
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ApiResponse<ExceptionResponse>> handleBusinessException(BusinessException ex) {
+        String requestId = UUID.randomUUID().toString();
+        log.warn("Business exception, requestId: {}, code: {}, message: {}", requestId, ex.getCode(), ex.getMessage());
+
+        ApiResponse<ExceptionResponse> response = new ApiResponse<>(
+                ex.getCode(),  // mã lỗi định nghĩa sẵn trong enum ResponseCode
+                requestId,
+                new ExceptionResponse(ex.getCode())
+        );
+
+        HttpStatus status;
+
+        // Gắn mã HTTP phù hợp theo loại lỗi
+        switch (ex.getCode()) {
+            case ResponseCode.INCORRECT_ACCOUNT_OR_PASSWORD:
+                status = HttpStatus.UNAUTHORIZED; // 401
+                break;
+            case ResponseCode.USER_DOES_NOT_EXIST:
+                status = HttpStatus.NOT_FOUND; // 404
+                break;
+            case ResponseCode.REFRESH_TOKEN_DOES_NOT_EXIST:
+            case ResponseCode.REFRESH_TOKEN_EXPIRED:
+                status = HttpStatus.UNAUTHORIZED;
+                break;
+            default:
+                status = HttpStatus.BAD_REQUEST; // fallback
+        }
+
+        return ResponseEntity.status(status).body(response);
     }
 
 }

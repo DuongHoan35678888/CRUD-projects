@@ -21,5 +21,7 @@ public class UserLogin {
 
     @JsonProperty("user_name")
     private String userName;
-}
 
+    @JsonProperty("refresh_token")
+    private String refreshToken;
+}
