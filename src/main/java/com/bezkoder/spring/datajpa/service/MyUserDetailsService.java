@@ -1,5 +1,6 @@
 package com.bezkoder.spring.datajpa.service;
 
+import com.bezkoder.spring.datajpa.common.ResponseCode;
 import com.bezkoder.spring.datajpa.model.UserPrincipal;
 import com.bezkoder.spring.datajpa.model.Users;
 import com.bezkoder.spring.datajpa.repository.UserRepository;
@@ -20,8 +21,8 @@ public class MyUserDetailsService implements UserDetailsService {
         Users user = userRepository.findByUsername(username);
 
         if (user == null) {
-            System.out.println("User not found");
-            throw new UsernameNotFoundException("User not found");
+            System.out.println(ResponseCode.USER_NOT_FOUND);
+            throw new UsernameNotFoundException(ResponseCode.USER_NOT_FOUND);
         }
 
         return new UserPrincipal(user);
