@@ -87,14 +87,14 @@ public class GlobalExceptionHandler {
         // Gắn mã HTTP phù hợp theo loại lỗi
         switch (ex.getCode()) {
             case ResponseCode.INCORRECT_ACCOUNT_OR_PASSWORD:
-                status = HttpStatus.UNAUTHORIZED; // 401
+                status = HttpStatus.BAD_REQUEST; // 400
                 break;
             case ResponseCode.USER_DOES_NOT_EXIST:
                 status = HttpStatus.NOT_FOUND; // 404
                 break;
             case ResponseCode.REFRESH_TOKEN_DOES_NOT_EXIST:
             case ResponseCode.REFRESH_TOKEN_EXPIRED:
-                status = HttpStatus.UNAUTHORIZED;
+                status = HttpStatus.BAD_REQUEST;
                 break;
             default:
                 status = HttpStatus.BAD_REQUEST; // fallback
