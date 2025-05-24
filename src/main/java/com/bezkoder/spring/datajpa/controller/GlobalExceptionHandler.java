@@ -96,6 +96,9 @@ public class GlobalExceptionHandler {
             case ResponseCode.REFRESH_TOKEN_EXPIRED:
                 status = HttpStatus.BAD_REQUEST;
                 break;
+            case ResponseCode.UNAUTHORIZED:
+                status = HttpStatus.UNAUTHORIZED;
+                break;
             default:
                 status = HttpStatus.BAD_REQUEST; // fallback
         }
