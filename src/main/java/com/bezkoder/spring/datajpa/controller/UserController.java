@@ -90,9 +90,8 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<Boolean>> logout(HttpServletRequest request,
-                                                       HttpServletResponse response) {
-        return userService.logout(request, response);
+    public ResponseEntity<ApiResponse<Boolean>> logout(@RequestBody RefreshTokenRequest request) {
+        return userService.logout(request);
     }
 
     @PostMapping("/refresh-token")
