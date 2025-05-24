@@ -1,5 +1,6 @@
 package com.bezkoder.spring.datajpa.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -28,9 +29,11 @@ public class FolderKey {
 
     @NotBlank(message = "Folder name must not be empty")
     @Size(max = 255, message = "Folder name must be under 255 characters")
+    @JsonProperty("folder_key_name")
     @Column(name = "folderKeyName", nullable = false, unique = true)
     private String folderKeyName;
 
+    @JsonProperty("is_favorite")
     @Column(name = "isFavorite")
     private boolean favorite;
 
