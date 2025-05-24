@@ -5,7 +5,6 @@ import com.bezkoder.spring.datajpa.dto.RefreshTokenRequest;
 import com.bezkoder.spring.datajpa.dto.UserLogin;
 import com.bezkoder.spring.datajpa.model.Users;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -27,9 +26,11 @@ public interface IUserService {
 
     boolean existsByUsername(String username);
 
-    ResponseEntity<ApiResponse<Boolean>> logout(RefreshTokenRequest request);
+    ResponseEntity<ApiResponse<Boolean>> logoutv1(RefreshTokenRequest request);
 
     ResponseEntity<ApiResponse<UserLogin>> refreshToken(RefreshTokenRequest request);
 
     void validateUsernameNotTaken(@NotBlank(message = "Username must not be blank") String username);
+
+    ResponseEntity<ApiResponse<Boolean>> logout(HttpServletRequest request);
 }

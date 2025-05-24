@@ -11,7 +11,6 @@ import com.bezkoder.spring.datajpa.repository.RefreshTokenRepository;
 import com.bezkoder.spring.datajpa.service.IUserService;
 import com.bezkoder.spring.datajpa.service.JWTService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,10 +88,16 @@ public class UserController {
         return userService.login(loginRequest);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/logout/v1")
     public ResponseEntity<ApiResponse<Boolean>> logout(@RequestBody RefreshTokenRequest request) {
+        return userService.logoutv1(request);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Boolean>> logout(HttpServletRequest request) {
         return userService.logout(request);
     }
+
 
     @PostMapping("/refresh-token")
     public ResponseEntity<ApiResponse<UserLogin>> refreshAccessToken(@RequestBody RefreshTokenRequest request) {

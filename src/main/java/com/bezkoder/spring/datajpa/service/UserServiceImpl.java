@@ -4,11 +4,13 @@ import com.bezkoder.spring.datajpa.common.ResponseCode;
 import com.bezkoder.spring.datajpa.dto.ApiResponse;
 import com.bezkoder.spring.datajpa.dto.RefreshTokenRequest;
 import com.bezkoder.spring.datajpa.dto.UserLogin;
+import com.bezkoder.spring.datajpa.entity.BlacklistedToken;
 import com.bezkoder.spring.datajpa.exception.BusinessException;
 import com.bezkoder.spring.datajpa.exception.UserNotFoundException;
 import com.bezkoder.spring.datajpa.model.RefreshToken;
 import com.bezkoder.spring.datajpa.model.RefreshTokenStatus;
 import com.bezkoder.spring.datajpa.model.Users;
+import com.bezkoder.spring.datajpa.repository.BlacklistedTokenRepository;
 import com.bezkoder.spring.datajpa.repository.RefreshTokenRepository;
 import com.bezkoder.spring.datajpa.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,6 +50,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
+    private BlacklistedTokenRepository blacklistedTokenRepository;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
@@ -140,7 +145,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional
-    public ResponseEntity<ApiResponse<Boolean>> logout(RefreshTokenRequest request) {
+    public ResponseEntity<ApiResponse<Boolean>> logoutv1(RefreshTokenRequest request) {
         String refreshTokenStr = request.getRefreshToken();
 
         RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenStr)
@@ -194,6 +199,24 @@ public class UserServiceImpl implements IUserService {
         if (userRepository.existsByUsername(username)) {
             throw new BusinessException(ResponseCode.USER_ALREADY_EXISTS, "Username already exists");
         }
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<Boolean>> logout(HttpServletRequest request) {
+        String token = extractTokenFromHeader(request);
+        if (blacklistedTokenRepository.existsByToken(token)) {
+            throw new BusinessException(ResponseCode.UNAUTHORIZED, "Token is blacklisted");
+        }
+
+        Date expiry = jwtService.extractExpiration(token);
+
+        BlacklistedToken blacklistedToken = new BlacklistedToken();
+        blacklistedToken.setToken(token);
+        blacklistedToken.setExpiryDate(expiry.toInstant());
+
+        blacklistedTokenRepository.save(blacklistedToken);
+
+        return ResponseEntity.ok(ApiResponse.success(true));
     }
 
     private String extractTokenFromHeader(HttpServletRequest request) {
