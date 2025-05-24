@@ -24,12 +24,12 @@ public class ApiResponse<T> {
         this.response = response;
     }
 
-    public static ApiResponse<Boolean> success(boolean b) {
-        return new ApiResponse<>(
-                ResponseCode.SUCCESS,
-                UUID.randomUUID().toString(),
-                b
-        );
+    public static <T> ApiResponse<T> success(T response) {
+        return new ApiResponse<>(ResponseCode.SUCCESS, UUID.randomUUID().toString(), response);
+    }
+
+    public static <T> ApiResponse<T> error(String errorCode, T response) {
+        return new ApiResponse<>(errorCode, UUID.randomUUID().toString(), response);
     }
 
 }

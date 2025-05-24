@@ -224,7 +224,7 @@ public class UserServiceImpl implements IUserService {
         if (token != null && token.startsWith("Bearer ")) {
             return token.substring(7);
         }
-        throw new BusinessException(ResponseCode.ERROR, ResponseCode.REFRESH_TOKEN_DOES_NOT_EXIST);
+        throw new BusinessException(ResponseCode.UNAUTHORIZED, ResponseCode.REFRESH_TOKEN_DOES_NOT_EXIST);
     }
 
     @Override

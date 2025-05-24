@@ -90,12 +90,11 @@ public class GlobalExceptionHandler {
                 status = HttpStatus.BAD_REQUEST; // 400
                 break;
             case ResponseCode.USER_DOES_NOT_EXIST:
+            case ResponseCode.ID_NOT_EXISTS:
                 status = HttpStatus.NOT_FOUND; // 404
                 break;
             case ResponseCode.REFRESH_TOKEN_DOES_NOT_EXIST:
             case ResponseCode.REFRESH_TOKEN_EXPIRED:
-                status = HttpStatus.BAD_REQUEST;
-                break;
             case ResponseCode.UNAUTHORIZED:
                 status = HttpStatus.UNAUTHORIZED;
                 break;
