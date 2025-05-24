@@ -51,10 +51,7 @@ public class UserController {
     public ResponseEntity<ApiResponse<Users>> register(@Valid @RequestBody Users users) {
         String requestId = UUID.randomUUID().toString();
 
-        // Check username đã tồn tại
-        if (userService.existsByUsername(users.getUsername())) {
-            throw new IllegalArgumentException(ResponseCode.USER_ALREADY_EXISTS);
-        }
+        userService.validateUsernameNotTaken(users.getUsername());
 
         Users registeredUser = userService.register(users);
         return ResponseEntity.ok(new ApiResponse<>(ResponseCode.SUCCESS, requestId, registeredUser));

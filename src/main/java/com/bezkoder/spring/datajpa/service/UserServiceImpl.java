@@ -198,6 +198,16 @@ public class UserServiceImpl implements IUserService {
         return ResponseEntity.ok(response);
     }
 
+    @Override
+    public void validateUsernameNotTaken(String username) {
+        if (username == null || username.isBlank()) {
+            throw new BusinessException(ResponseCode.INVALID_INPUT, "Username is required");
+        }
+        if (userRepository.existsByUsername(username)) {
+            throw new BusinessException(ResponseCode.USER_ALREADY_EXISTS, "Username already exists");
+        }
+    }
+
     private String extractTokenFromHeader(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
