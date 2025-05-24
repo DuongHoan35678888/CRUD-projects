@@ -29,12 +29,12 @@ public class FolderKey {
 
     @NotBlank(message = "Folder name must not be empty")
     @Size(max = 255, message = "Folder name must be under 255 characters")
-    @JsonProperty("folder_key_name")
-    @Column(name = "folderKeyName", nullable = false, unique = true)
-    private String folderKeyName;
+    @JsonProperty("name")
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
 
     @JsonProperty("is_favorite")
-    @Column(name = "isFavorite")
-    private boolean favorite;
+    @Column(name = "favorite")
+    private Boolean favorite;
 
 }

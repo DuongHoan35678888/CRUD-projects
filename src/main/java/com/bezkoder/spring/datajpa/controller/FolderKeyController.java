@@ -2,6 +2,8 @@ package com.bezkoder.spring.datajpa.controller;
 
 import com.bezkoder.spring.datajpa.common.ResponseCode;
 import com.bezkoder.spring.datajpa.dto.ApiResponse;
+import com.bezkoder.spring.datajpa.dto.BooleanResponse;
+import com.bezkoder.spring.datajpa.dto.FolderKeyListResponse;
 import com.bezkoder.spring.datajpa.model.FolderKey;
 import com.bezkoder.spring.datajpa.service.IFolderKeyService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,15 +36,17 @@ public class FolderKeyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Boolean>> deleteFolderKey(@PathVariable String id) {
+    public ResponseEntity<ApiResponse<BooleanResponse>> deleteFolderKey(@PathVariable String id) {
         boolean deleted = folderKeyService.deleteFolderKey(id);
-        return ResponseEntity.ok(ApiResponse.success(deleted));
+        return ResponseEntity.ok(ApiResponse.success(new BooleanResponse(deleted)));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<FolderKey>>> getAllFolderKey() {
-        List<FolderKey> allFolderKey = folderKeyService.getAllFolderKey();
-        return ResponseEntity.ok(ApiResponse.success(allFolderKey));
+    public ResponseEntity<ApiResponse<FolderKeyListResponse>> getAllFolderKey() {
+        String requestId = UUID.randomUUID().toString();
+        List<FolderKey> list = folderKeyService.getAllFolderKey();
+        FolderKeyListResponse response = new FolderKeyListResponse(list);
+        return ResponseEntity.ok(new ApiResponse<>(ResponseCode.SUCCESS, requestId, response));
     }
 
     @GetMapping("/{id}")

@@ -1,10 +1,7 @@
 package com.bezkoder.spring.datajpa.controller;
 
 import com.bezkoder.spring.datajpa.common.ResponseCode;
-import com.bezkoder.spring.datajpa.dto.ApiResponse;
-import com.bezkoder.spring.datajpa.dto.RefreshTokenRequest;
-import com.bezkoder.spring.datajpa.dto.SaltResponse;
-import com.bezkoder.spring.datajpa.dto.UserLogin;
+import com.bezkoder.spring.datajpa.dto.*;
 import com.bezkoder.spring.datajpa.exception.UserNotFoundException;
 import com.bezkoder.spring.datajpa.model.Users;
 import com.bezkoder.spring.datajpa.repository.RefreshTokenRepository;
@@ -94,7 +91,7 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<Boolean>> logout(HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<BooleanResponse>> logout(HttpServletRequest request) {
         return userService.logout(request);
     }
 

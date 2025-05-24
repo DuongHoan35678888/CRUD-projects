@@ -2,6 +2,7 @@ package com.bezkoder.spring.datajpa.service;
 
 import com.bezkoder.spring.datajpa.common.ResponseCode;
 import com.bezkoder.spring.datajpa.dto.ApiResponse;
+import com.bezkoder.spring.datajpa.dto.BooleanResponse;
 import com.bezkoder.spring.datajpa.dto.RefreshTokenRequest;
 import com.bezkoder.spring.datajpa.dto.UserLogin;
 import com.bezkoder.spring.datajpa.entity.BlacklistedToken;
@@ -14,20 +15,16 @@ import com.bezkoder.spring.datajpa.repository.BlacklistedTokenRepository;
 import com.bezkoder.spring.datajpa.repository.RefreshTokenRepository;
 import com.bezkoder.spring.datajpa.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -202,7 +199,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResponseEntity<ApiResponse<Boolean>> logout(HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<BooleanResponse>> logout(HttpServletRequest request) {
         String token = extractTokenFromHeader(request);
         if (blacklistedTokenRepository.existsByToken(token)) {
             throw new BusinessException(ResponseCode.UNAUTHORIZED, "Token is blacklisted");
@@ -216,7 +213,7 @@ public class UserServiceImpl implements IUserService {
 
         blacklistedTokenRepository.save(blacklistedToken);
 
-        return ResponseEntity.ok(ApiResponse.success(true));
+        return ResponseEntity.ok(ApiResponse.success(new BooleanResponse(true)));
     }
 
     private String extractTokenFromHeader(HttpServletRequest request) {

@@ -22,7 +22,7 @@ public class FolderKeyServiceImpl implements IFolderKeyService {
             throw new BusinessException(ResponseCode.INVALID_INPUT, "FolderKey must not be null");
         }
 
-        boolean exists = folderKeyRepository.existsByFolderKeyName(folderKey.getFolderKeyName());
+        boolean exists = folderKeyRepository.existsByName(folderKey.getName());
         if (exists) {
             throw new BusinessException(ResponseCode.ALREADY_EXISTS, "FolderKey name already exists");
         }
@@ -36,8 +36,8 @@ public class FolderKeyServiceImpl implements IFolderKeyService {
         FolderKey existing = folderKeyRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ResponseCode.ERROR, "FOLDER_NOT_FOUND"));
 
-        existing.setFolderKeyName(folderKey.getFolderKeyName());
-        existing.setFavorite(folderKey.isFavorite());
+        existing.setName(folderKey.getName());
+        existing.setFavorite(folderKey.getFavorite());
 
         return folderKeyRepository.save(existing);
     }

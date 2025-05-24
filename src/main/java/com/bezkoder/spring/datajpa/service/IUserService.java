@@ -1,6 +1,7 @@
 package com.bezkoder.spring.datajpa.service;
 
 import com.bezkoder.spring.datajpa.dto.ApiResponse;
+import com.bezkoder.spring.datajpa.dto.BooleanResponse;
 import com.bezkoder.spring.datajpa.dto.RefreshTokenRequest;
 import com.bezkoder.spring.datajpa.dto.UserLogin;
 import com.bezkoder.spring.datajpa.model.Users;
@@ -32,5 +33,5 @@ public interface IUserService {
 
     void validateUsernameNotTaken(@NotBlank(message = "Username must not be blank") String username);
 
-    ResponseEntity<ApiResponse<Boolean>> logout(HttpServletRequest request);
+    ResponseEntity<ApiResponse<BooleanResponse>> logout(HttpServletRequest request);
 }
