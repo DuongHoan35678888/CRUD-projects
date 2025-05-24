@@ -27,7 +27,7 @@ public interface IUserService {
 
     boolean existsByUsername(String username);
 
-    ResponseEntity<ApiResponse<Boolean>> logout(HttpServletRequest request, HttpServletResponse response);
+    ResponseEntity<ApiResponse<Boolean>> logout(RefreshTokenRequest request);
 
     ResponseEntity<ApiResponse<UserLogin>> refreshToken(RefreshTokenRequest request);
 

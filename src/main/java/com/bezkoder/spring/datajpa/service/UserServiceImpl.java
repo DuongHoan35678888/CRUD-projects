@@ -140,30 +140,18 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional
-    public ResponseEntity<ApiResponse<Boolean>> logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<ApiResponse<Boolean>> logout(RefreshTokenRequest request) {
+        String refreshTokenStr = request.getRefreshToken();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenStr)
+                .orElseThrow(() -> new BusinessException(ResponseCode.ERROR, ResponseCode.REFRESH_TOKEN_DOES_NOT_EXIST));
 
-        if (authentication != null
-                && authentication.isAuthenticated()
-                && !(authentication instanceof AnonymousAuthenticationToken)) {
+        refreshToken.setRefreshTokenStatus(RefreshTokenStatus.REVOKED);
+        refreshTokenRepository.save(refreshToken);
 
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        log.info("Refresh token '{}' has been revoked", refreshTokenStr);
 
-            String token = extractTokenFromHeader(request);
-
-            RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
-                    .orElseThrow(() -> new BusinessException(ResponseCode.ERROR, ResponseCode.REFRESH_TOKEN_DOES_NOT_EXIST));
-
-            refreshToken.setRefreshTokenStatus(RefreshTokenStatus.REVOKED);
-            refreshTokenRepository.save(refreshToken);
-
-            log.info("User '{}' logged out, token revoked", authentication.getName());
-
-            return ResponseEntity.ok(ApiResponse.success(true));
-        } else {
-            throw new BusinessException(ResponseCode.ERROR, ResponseCode.USER_NOT_FOUND);
-        }
+        return ResponseEntity.ok(ApiResponse.success(true));
     }
 
     @Override
