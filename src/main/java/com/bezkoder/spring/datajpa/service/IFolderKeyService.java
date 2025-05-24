@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IFolderKeyService {
 
-    FolderKey addFolderKey(FolderKey employee);
+    FolderKey addFolderKey(FolderKey folderKey);
 
     FolderKey updateFolderKey(String id, FolderKey employee);
 

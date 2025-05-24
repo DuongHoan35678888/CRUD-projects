@@ -18,11 +18,18 @@ public class FolderKeyServiceImpl implements IFolderKeyService {
 
     @Override
     public FolderKey addFolderKey(FolderKey folderKey) {
-        if (folderKey != null) {
-            return folderKeyRepository.save(folderKey);
+        if (folderKey == null) {
+            throw new BusinessException(ResponseCode.INVALID_INPUT, "FolderKey must not be null");
         }
-        return null;
+
+        boolean exists = folderKeyRepository.existsByFolderKeyName(folderKey.getFolderKeyName());
+        if (exists) {
+            throw new BusinessException(ResponseCode.ALREADY_EXISTS, "FolderKey name already exists");
+        }
+
+        return folderKeyRepository.save(folderKey);
     }
+
 
     @Override
     public FolderKey updateFolderKey(String id, FolderKey folderKey) {

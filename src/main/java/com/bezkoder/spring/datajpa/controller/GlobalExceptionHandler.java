@@ -5,6 +5,7 @@ import com.bezkoder.spring.datajpa.dto.ApiResponse;
 import com.bezkoder.spring.datajpa.dto.ExceptionResponse;
 import com.bezkoder.spring.datajpa.exception.BusinessException;
 import com.bezkoder.spring.datajpa.exception.UserNotFoundException;
+import com.bezkoder.spring.datajpa.model.Users;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,12 @@ public class GlobalExceptionHandler {
 
     // Xử lý UserNotFoundException
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiResponse<String>> handleUserNotFound(UserNotFoundException ex) {
+    public ResponseEntity<ApiResponse<Users>> handleUserNotFound(UserNotFoundException ex) {
         String requestId = UUID.randomUUID().toString();
-        ApiResponse<String> response = new ApiResponse<>(
-                ResponseCode.USER_NOT_FOUND,  // bạn cần định nghĩa mã này
+        ApiResponse<Users> response = new ApiResponse<>(
+                ResponseCode.USER_NOT_FOUND,
                 requestId,
-                null
+                new Users()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }

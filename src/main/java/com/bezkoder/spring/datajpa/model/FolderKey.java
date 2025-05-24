@@ -1,6 +1,8 @@
 package com.bezkoder.spring.datajpa.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,7 @@ import java.util.UUID;
 @Table(name = "folder_key")
 public class FolderKey {
     @Id
+    @Column(name = "id", nullable = false, updatable = false)
     private String id;
 
     @PrePersist
@@ -23,10 +26,12 @@ public class FolderKey {
         }
     }
 
-    @Column(name = "folderKeyName", nullable = false)
+    @NotBlank(message = "Folder name must not be empty")
+    @Size(max = 255, message = "Folder name must be under 255 characters")
+    @Column(name = "folderKeyName", nullable = false, unique = true)
     private String folderKeyName;
 
     @Column(name = "isFavorite")
-    private boolean isFavorite;
+    private boolean favorite;
 
 }

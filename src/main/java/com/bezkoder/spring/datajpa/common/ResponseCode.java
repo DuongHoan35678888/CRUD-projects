@@ -18,4 +18,5 @@ public class ResponseCode {
     public static final String REFRESH_TOKEN_EXPIRED = "AUT007";
     public static final String UNAUTHORIZED = "AUT008";
     public static final String ID_NOT_EXISTS = "FK0001";
+    public static final String ALREADY_EXISTS = "FK0002";
 }

@@ -2,6 +2,7 @@ package com.bezkoder.spring.datajpa.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Users {
 
     @Id
@@ -34,11 +36,4 @@ public class Users {
     @Column(name = "salt", nullable = false)
     @NotBlank(message = "Salt must not be blank")
     private String salt;
-
-    public Users(String id, String username, String password, String salt) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.salt = salt;
-    }
 }
