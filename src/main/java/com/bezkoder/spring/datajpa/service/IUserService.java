@@ -4,7 +4,7 @@ import com.bezkoder.spring.datajpa.dto.ApiResponse;
 import com.bezkoder.spring.datajpa.dto.BooleanResponse;
 import com.bezkoder.spring.datajpa.dto.RefreshTokenRequest;
 import com.bezkoder.spring.datajpa.dto.UserLogin;
-import com.bezkoder.spring.datajpa.model.Users;
+import com.bezkoder.spring.datajpa.entity.Users;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;

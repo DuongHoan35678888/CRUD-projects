@@ -1,8 +1,8 @@
 package com.bezkoder.spring.datajpa.service;
 
 import com.bezkoder.spring.datajpa.common.ResponseCode;
-import com.bezkoder.spring.datajpa.model.UserPrincipal;
-import com.bezkoder.spring.datajpa.model.Users;
+import com.bezkoder.spring.datajpa.entity.UserPrincipal;
+import com.bezkoder.spring.datajpa.entity.Users;
 import com.bezkoder.spring.datajpa.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

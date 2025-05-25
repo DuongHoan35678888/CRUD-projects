@@ -1,4 +1,4 @@
-package com.bezkoder.spring.datajpa.model;
+package com.bezkoder.spring.datajpa.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

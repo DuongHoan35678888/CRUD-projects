@@ -5,7 +5,7 @@ import com.bezkoder.spring.datajpa.dto.ApiResponse;
 import com.bezkoder.spring.datajpa.dto.ExceptionResponse;
 import com.bezkoder.spring.datajpa.exception.BusinessException;
 import com.bezkoder.spring.datajpa.exception.UserNotFoundException;
-import com.bezkoder.spring.datajpa.model.Users;
+import com.bezkoder.spring.datajpa.entity.Users;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

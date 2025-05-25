@@ -3,7 +3,7 @@ package com.bezkoder.spring.datajpa.controller;
 import com.bezkoder.spring.datajpa.common.ResponseCode;
 import com.bezkoder.spring.datajpa.dto.*;
 import com.bezkoder.spring.datajpa.exception.UserNotFoundException;
-import com.bezkoder.spring.datajpa.model.Users;
+import com.bezkoder.spring.datajpa.entity.Users;
 import com.bezkoder.spring.datajpa.repository.RefreshTokenRepository;
 import com.bezkoder.spring.datajpa.service.IUserService;
 import com.bezkoder.spring.datajpa.service.JWTService;

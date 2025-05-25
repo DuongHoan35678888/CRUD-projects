@@ -1,6 +1,6 @@
 package com.bezkoder.spring.datajpa.dto;
 
-import com.bezkoder.spring.datajpa.model.FolderKey;
+import com.bezkoder.spring.datajpa.entity.FolderKey;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

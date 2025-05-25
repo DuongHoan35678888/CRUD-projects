@@ -1,4 +1,4 @@
-package com.bezkoder.spring.datajpa.model;
+package com.bezkoder.spring.datajpa.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;

@@ -4,7 +4,7 @@ import com.bezkoder.spring.datajpa.common.ResponseCode;
 import com.bezkoder.spring.datajpa.dto.ApiResponse;
 import com.bezkoder.spring.datajpa.dto.BooleanResponse;
 import com.bezkoder.spring.datajpa.dto.FolderKeyListResponse;
-import com.bezkoder.spring.datajpa.model.FolderKey;
+import com.bezkoder.spring.datajpa.entity.FolderKey;
 import com.bezkoder.spring.datajpa.service.IFolderKeyService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

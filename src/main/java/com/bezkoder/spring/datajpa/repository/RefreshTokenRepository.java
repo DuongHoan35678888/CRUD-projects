@@ -1,6 +1,6 @@
 package com.bezkoder.spring.datajpa.repository;
 
-import com.bezkoder.spring.datajpa.model.RefreshToken;
+import com.bezkoder.spring.datajpa.entity.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

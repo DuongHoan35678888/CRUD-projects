@@ -1,6 +1,6 @@
 package com.bezkoder.spring.datajpa.repository;
 
-import com.bezkoder.spring.datajpa.model.FolderKey;
+import com.bezkoder.spring.datajpa.entity.FolderKey;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.jpa.repository.JpaRepository;

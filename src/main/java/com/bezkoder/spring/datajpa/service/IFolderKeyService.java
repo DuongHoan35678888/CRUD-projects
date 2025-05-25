@@ -1,6 +1,6 @@
 package com.bezkoder.spring.datajpa.service;
 
-import com.bezkoder.spring.datajpa.model.FolderKey;
+import com.bezkoder.spring.datajpa.entity.FolderKey;
 
 import java.util.List;
 
